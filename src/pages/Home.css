@@ -1,0 +1,104 @@
+ /* 整体容器：纵向滚动+吸附 */
+.home-scroll-container {
+    width: 100%;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    background: #fff;
+  }
+  
+  /* 每个模块section */
+  .home-section {
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    scroll-snap-align: start;
+    box-sizing: border-box;
+    padding: 60px 20px;
+  }
+  
+  /* 第一模块：轮播背景 */
+  .home-section-carousel {
+    background: linear-gradient(135deg, #af2df0bd 0%, #ffffff69 100%);
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* 轮播容器 */
+  .home-carousel-wrap {
+    width: 90vw;
+    max-width: 1200px;
+    min-width: 320px;
+    height: 70vh;
+    max-height: 700px;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 24px 16px;
+  }
+
+  .home-carousel-wrap .semi-carousel {
+    width: 100%;
+    height: 100%;
+  }
+
+  .home-carousel-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 4px 32px #ae2af044;
+  }
+  
+  /* 第二模块：个人介绍 */
+  .home-section-profile {
+    background: linear-gradient(135deg, #fff 0%, #f5f7fa 100%);
+  }
+  .home-avatar {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 24px #ae2af033;
+  }
+  .home-tags {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .home-tag {
+    background: #ba30ff98;
+    color: #fff;
+    border-radius: 12px;
+    padding: 4px 16px;
+    font-size: 16px;
+  }
+  
+  /* 第三模块：时间轴 */
+  .home-section-timeline {
+    background: linear-gradient(135deg, #f5f7fa 0%, #ae2af0 100%);
+    color: #fff;
+  }
+  .home-section-timeline .semi-typography,
+  .home-section-timeline .semi-typography-title,
+  .home-section-timeline .semi-typography-paragraph,
+  .home-section-timeline .semi-typography-text,
+  .home-section-timeline .semi-timeline-item-content {
+    color: #fff !important;
+  }
+  .home-timeline-wrap {
+    width: 100%;
+    max-width: 600px;
+  }
+  
