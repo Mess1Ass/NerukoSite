@@ -27,11 +27,11 @@ const person = {
 const timelineItems = [
     { time: '2024-12-04', title: 'MM公式照初披露', desc: '正式公布公式照，开启偶像之路' },
     { time: '2024-12-07', title: 'MM舞台初披露', desc: '猫猫的第一次舞台' },
-    { time: '2025-03-28', title: 'OM2.0 && 生格', desc: 'MM的OM2.0兼我们猫猫的升格！成为正式成员啦' },
+    { time: '2025-03-28', title: 'OM2.0 && 升格', desc: 'MM的OM2.0兼我们猫猫的升格！成为正式成员啦' },
     { time: '2025-06-07', title: '生日SP', desc: '属于魔法猫咪的第一个生日SP特殊舞台' },
     { time: '2025-06-10', title: '生日', desc: '猫猫的真实生日' },
-    { time: '2025-07-10', title: 'on!line兼任公式照初披露', desc: '兼任on!ine，真正的人机猫猫' },
-    { time: '2025-07-18', title: 'on!line兼任舞台初披露', desc: 'on!line兼任舞台大公开，后辈猫变前辈猫' },
+    { time: '2025-07-10', title: 'on!ine兼任公式照初披露', desc: '兼任on!ine，真正的人机猫猫' },
+    { time: '2025-07-18', title: 'on!ine兼任舞台初披露', desc: 'on!ine兼任舞台大公开，后辈猫变前辈猫' },
     // 可继续添加
 ];
 
