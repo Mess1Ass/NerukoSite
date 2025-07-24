@@ -4,15 +4,24 @@ import './Home.css';
 
 // 只用一张图片测试
 const carouselImages = [
-    '/assets/Home/CarouselImgs/DSC09813.JPG',
-    '/assets/Home/CarouselImgs/DSC01223.JPG',
-    '/assets/Home/CarouselImgs/DSC01443.JPG',
-    '/assets/Home/CarouselImgs/DSC01484.JPG',
-    '/assets/Home/CarouselImgs/DSC01505.JPG',
-    '/assets/Home/CarouselImgs/DSC01518.JPG',
-    '/assets/Home/CarouselImgs/DSC02811.JPG',
-    '/assets/Home/CarouselImgs/DSC03179.JPG',
-    '/assets/Home/CarouselImgs/DSC03800.JPG',
+    '/assets/Home/CarouselImgs/1.JPG',
+    '/assets/Home/CarouselImgs/2.JPG',
+    '/assets/Home/CarouselImgs/3.JPG',
+    '/assets/Home/CarouselImgs/4.JPG',
+    '/assets/Home/CarouselImgs/5.JPG',
+    '/assets/Home/CarouselImgs/6.JPG',
+    '/assets/Home/CarouselImgs/7.JPG',
+    '/assets/Home/CarouselImgs/8.JPG',
+    '/assets/Home/CarouselImgs/9.JPG',
+    '/assets/Home/CarouselImgs/10.JPG',
+    '/assets/Home/CarouselImgs/11.JPG',
+    '/assets/Home/CarouselImgs/12.JPG',
+    '/assets/Home/CarouselImgs/13.JPG',
+    '/assets/Home/CarouselImgs/14.JPG',
+    '/assets/Home/CarouselImgs/15.JPG',
+    '/assets/Home/CarouselImgs/16.JPG',
+    '/assets/Home/CarouselImgs/17.JPG',
+    '/assets/Home/CarouselImgs/18.JPG',
 ];
 
 // 个人信息
@@ -29,7 +38,7 @@ const timelineItems = [
     { time: '2024-12-07', title: 'MM舞台初披露', desc: '猫猫的第一次舞台' },
     { time: '2025-03-28', title: 'OM2.0 && 升格', desc: 'MM的OM2.0兼我们猫猫的升格！成为正式成员啦' },
     { time: '2025-06-07', title: '生日SP', desc: '属于魔法猫咪的第一个生日SP特殊舞台' },
-    { time: '2025-06-10', title: '生日', desc: '猫猫的真实生日' },
+    { time: '2025-06-10', title: '生日', desc: '猫猫的真实生日，让我们祝她“生日快乐”！' },
     { time: '2025-07-10', title: 'on!ine兼任公式照初披露', desc: '兼任on!ine，真正的人机猫猫' },
     { time: '2025-07-18', title: 'on!ine兼任舞台初披露', desc: 'on!ine兼任舞台大公开，后辈猫变前辈猫' },
     // 可继续添加
@@ -67,6 +76,7 @@ export default function Home() {
                         <span key={tag} className="home-tag">{tag}</span>
                     ))}
                 </div>
+                <a href="https://weibo.com/u/6480076001" style={{ marginTop: 16, display: 'block', textAlign: 'center' }}>魔法猫咪微博主页</a>
             </section>
             {/* 第三模块：时间轴 */}
             <section className="home-section home-section-timeline">

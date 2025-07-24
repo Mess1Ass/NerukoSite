@@ -3,6 +3,7 @@ import { Layout, Nav, Button } from '@douyinfe/semi-ui';
 import { IconSemiLogo, IconMenu, IconClose } from '@douyinfe/semi-icons';
 import { useNavigate, Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
+import Focus from './pages/Focus';
 
 const { Header, Content } = Layout;
 
@@ -30,7 +31,7 @@ function App() {
   // 菜单项
   const navItems = [
     { itemKey: '/home', text: '首页' },
-    // { itemKey: '/bidExport', text: '竞价数据导出' },
+    { itemKey: '/focus', text: '直拍链接合集' },
     // { itemKey: '/bidDetail', text: '竞价数据查看' },
     // 可继续添加更多菜单项
   ];
@@ -44,7 +45,7 @@ function App() {
         left: 0,
         width: '100vw',
         height: menuOpen ? 'calc(100vh - 64px)' : 0,
-        background: 'rgba(174, 42, 240, 0.3)',
+        background: 'rgba(0, 120, 215, 0.3)',
         zIndex: 2000,
         display: 'flex',
         flexDirection: 'column',
@@ -151,6 +152,7 @@ function App() {
       <Content style={{ padding: 0, margin: '0 auto', width: '100vw', boxSizing: 'border-box' }}>
         <Routes>
           <Route path="/home" element={<Home />} />
+          <Route path="/focus" element={<Focus />} />
           {/* 其他路由 */}
         </Routes>
       </Content>
