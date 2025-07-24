@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Timeline, Typography, Button, TreeSelect, BackTop } from '@douyinfe/semi-ui';
 import { IconLikeHeart, IconArrowUp } from '@douyinfe/semi-icons';
 import axios from 'axios';
+import './Focus.css';
 
 const focusEvents = [
   {
@@ -231,6 +232,61 @@ export default function Focus() {
     const apiUrl = `https://api.b23.tv/video/${id}`;
   }
 
+  // 背景图片列表
+  const bgImgs = [
+    '/assets/Home/CarouselImgs/1.JPG',
+    '/assets/Home/CarouselImgs/2.JPG',
+    '/assets/Home/CarouselImgs/3.JPG',
+    '/assets/Home/CarouselImgs/4.JPG',
+    '/assets/Home/CarouselImgs/5.JPG',
+    '/assets/Home/CarouselImgs/6.JPG',
+    '/assets/Home/CarouselImgs/7.JPG',
+    '/assets/Home/CarouselImgs/8.JPG',
+    '/assets/Home/CarouselImgs/9.JPG',
+    '/assets/Home/CarouselImgs/10.JPG',
+    '/assets/Home/CarouselImgs/11.JPG',
+    '/assets/Home/CarouselImgs/12.JPG',
+    '/assets/Home/CarouselImgs/13.JPG',
+    '/assets/Home/CarouselImgs/14.JPG',
+    '/assets/Home/CarouselImgs/15.JPG',
+    '/assets/Home/CarouselImgs/16.JPG',
+    '/assets/Home/CarouselImgs/17.JPG',
+    '/assets/Home/CarouselImgs/18.JPG',
+  ];
+  // 生成三行图片，每行足够多，循环拼接避免空白
+  const ROWS = 3;
+  const COLS = 16; // 每行图片数量，保证动画期间不会出现空白
+  const bgImgRows = [];
+  for (let row = 0; row < ROWS; row++) {
+    const rowImgs = [];
+    for (let col = 0; col < COLS; col++) {
+      const imgIdx = (col + row * 3) % bgImgs.length;
+      rowImgs.push(
+        <img
+          key={`bgimg-${row}-${col}`}
+          src={bgImgs[imgIdx]}
+          className="focus-bg-img"
+          alt="bg"
+        />
+      );
+    }
+    // 拼接一份，保证无缝
+    for (let col = 0; col < COLS; col++) {
+      const imgIdx = (col + row * 3) % bgImgs.length;
+      rowImgs.push(
+        <img
+          key={`bgimg2-${row}-${col}`}
+          src={bgImgs[imgIdx]}
+          className="focus-bg-img"
+          alt="bg"
+        />
+      );
+    }
+    bgImgRows.push(
+      <div className="focus-bg-row" key={`row-${row}`}>{rowImgs}</div>
+    );
+  }
+
   return (
     <div style={{
       maxWidth: 700, margin: '0 auto', padding: 32,
@@ -239,10 +295,21 @@ export default function Focus() {
       MozUserSelect: 'none',
       msUserSelect: 'none',
       position: 'relative',
+      zIndex: 1,
+      background: 'transparent',
+      color: '#222', // 更深的字体颜色
+      textShadow: '0 2px 8px #fff, 0 0 2px #fff', // 白色描边增强可读性
+      fontSize: 20, // 默认字体放大
     }}>
+      {/* 背景图片滑动层 */}
+      <div className="focus-bg-slider">
+        <div className="focus-bg-track">
+          {bgImgRows}
+        </div>
+      </div>
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 32 }}>
         <TreeSelect
-          style={{ width: 320 }}
+          style={{ width: 320, fontSize: 22, color: '#222', fontWeight: 600, textShadow: '0 2px 8px #fff' }}
           treeData={treeData}
           placeholder="快速跳转到某场演出"
           onChange={handleSelect}
@@ -250,7 +317,7 @@ export default function Focus() {
           showClear
         />
       </div>
-      <Typography.Title heading={3} style={{ marginBottom: 32 }}>演出直拍/全景</Typography.Title>
+      <Typography.Title heading={3} style={{ marginBottom: 32, fontSize: 32, color: '#222', textShadow: '0 2px 8px #fff' }}>演出直拍/全景</Typography.Title>
       <Timeline mode="left">
         {focusEvents.map((event, idx) => (
           <Timeline.Item
@@ -264,17 +331,16 @@ export default function Focus() {
             }
           >
             <div id={`focus-timeline-item-${idx}`}>
-              <Typography.Text strong>{event.title}</Typography.Text>
+              <Typography.Text strong style={{ fontSize: 24, color: '#222', textShadow: '0 2px 8px #fff' }}>{event.title}</Typography.Text>
               <div style={{ marginTop: 8 }}>
                 {event.links.map((link, i) => (
                   <Button
                     key={i}
                     type="primary"
                     theme="light"
-                    size="small"
-                    style={{ marginRight: 8, marginBottom: 4 }}
+                    size="large"
+                    style={{ marginRight: 8, marginBottom: 4, fontSize: 20, fontWeight: 600, textShadow: '0 2px 8px #fff' }}
                     onClick={() => window.open(link.url, '_blank', 'noopener,noreferrer')}
-                  // onClick={() => handleWatch(link.url)}
                   >
                     {link.label}
                   </Button>
@@ -305,17 +371,6 @@ export default function Focus() {
       }}>
         <IconArrowUp />
       </BackTop>
-      <style>{`
-        @media (max-width: 600px) {
-          .semi-backtop {
-            right: 16px !important;
-            bottom: 16px !important;
-            width: 40px !important;
-            height: 40px !important;
-            font-size: 22px !important;
-          }
-        }
-      `}</style>
     </div>
   );
 }
