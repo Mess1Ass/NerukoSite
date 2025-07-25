@@ -6,7 +6,7 @@ import './Home.css';
 const carouselImages = [
     '/assets/Home/CarouselImgs/1.JPG',
     '/assets/Home/CarouselImgs/2.JPG',
-    '/assets/Home/CarouselImgs/3.JPG',
+    //'/assets/Home/CarouselImgs/3.JPG',
     '/assets/Home/CarouselImgs/4.JPG',
     '/assets/Home/CarouselImgs/5.JPG',
     '/assets/Home/CarouselImgs/6.JPG',
@@ -17,11 +17,6 @@ const carouselImages = [
     '/assets/Home/CarouselImgs/11.JPG',
     '/assets/Home/CarouselImgs/12.JPG',
     '/assets/Home/CarouselImgs/13.JPG',
-    '/assets/Home/CarouselImgs/14.JPG',
-    '/assets/Home/CarouselImgs/15.JPG',
-    '/assets/Home/CarouselImgs/16.JPG',
-    '/assets/Home/CarouselImgs/17.JPG',
-    '/assets/Home/CarouselImgs/18.JPG',
 ];
 
 // 个人信息
