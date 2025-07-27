@@ -45,7 +45,7 @@ function App() {
         left: 0,
         width: '100vw',
         height: menuOpen ? 'calc(100vh - 64px)' : 0,
-        background: 'rgba(0, 120, 215, 0.3)',
+        background: 'rgba(255, 255, 255, 0.84)',
         zIndex: 2000,
         display: 'flex',
         flexDirection: 'column',

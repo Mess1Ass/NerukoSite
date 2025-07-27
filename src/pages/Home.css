@@ -25,6 +25,7 @@
   .home-section-carousel {
     background: linear-gradient(135deg, #af2df0bd 0%, #ffffff69 100%);
     padding: 0;
+    margin: 0;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -43,7 +44,7 @@
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    padding: 24px 16px;
+    padding: 0;
   }
 
   .home-carousel-wrap .semi-carousel {
@@ -54,9 +55,10 @@
   .home-carousel-wrap img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 20px;
     box-shadow: 0 4px 32px #ae2af044;
+    background: transparent;
   }
   
   /* 第二模块：个人介绍 */
@@ -112,4 +114,113 @@
     width: 100%;
     max-width: 600px;
   }
+  
+/* 全屏视频开场样式 */
+.intro-video-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.intro-close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  z-index: 10000;
+}
+
+.intro-close-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* 移动端适配 */
+@media (max-width: 600px) {
+  .home-section-carousel {
+    padding: 20px 10px;
+    min-height: 90vh;
+  }
+  
+  .home-carousel-wrap {
+    width: 95vw;
+    height: 70vh;
+    min-height: 280px;
+  }
+  
+  .home-carousel-wrap video {
+    border-radius: 12px;
+    background: transparent;
+  }
+  
+  .intro-video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .intro-video {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+  
+  .intro-close-button {
+    top: 10px;
+    right: 10px;
+    padding: 8px 12px;
+    font-size: 14px;
+    min-width: 60px;
+    height: 36px;
+    border-radius: 18px;
+  }
+}
+
+/* 超小屏幕适配 */
+@media (max-width: 400px) {
+  .home-carousel-wrap {
+    width: 98vw;
+    height: 60vh;
+    min-height: 240px;
+  }
+  
+  .home-carousel-wrap video {
+    border-radius: 8px;
+    background: transparent;
+  }
+  
+  .intro-close-button {
+    top: 8px;
+    right: 8px;
+    padding: 6px 10px;
+    font-size: 12px;
+    min-width: 50px;
+    height: 32px;
+  }
+}
   
