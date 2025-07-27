@@ -18,7 +18,7 @@ const generateCarouselVideos = () => {
   const imgCount = 3; // 根据实际图片数量设置
   const bgImgs = [];
   for (let i = 1; i <= imgCount; i++) {
-    bgImgs.push(`http://video.tool4me.cn/neruko/homeVideo/${i}.mp4`);
+    bgImgs.push(`https://video.tool4me.cn/neruko/homeVideo/${i}.mp4`);
   }
   return bgImgs;
 };
