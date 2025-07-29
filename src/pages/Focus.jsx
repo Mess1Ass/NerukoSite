@@ -6,7 +6,7 @@ import {
 import { IconLikeHeart, IconArrowUp, IconPlus, IconMinus } from "@douyinfe/semi-icons";
 import axios from "axios";
 import "./Focus.css";
-import config from '../config';
+import config, { getCurrentDomainConfig } from '../config';
 
 
 
@@ -21,6 +21,9 @@ export default function Focus() {
   const [links, setLinks] = useState([{ url: "", label: "" }]);
   const [saveLoading, setSaveLoading] = useState(false);
   const [focusEvents, setFocusEvents] = useState([]);
+  
+  // 获取当前域名配置
+  const domainConfig = getCurrentDomainConfig();
 
   useEffect(() => {
     axios.get(`${config.API_BASE_URL}/getAll`).then((response) => {
@@ -68,38 +71,49 @@ export default function Focus() {
 
   function handleWatchWeibo(url) {
     // 提取最后一个 / 后面的 id
-    const id = url.substring(url.lastIndexOf("/") + 1);
-    // 构造 API 地址
-    const apiUrl = `https://weibo.com/ajax/statuses/show?id=${id}&locale=zh-CN&isGetLongText=true`;
-
-    // 发起 GET 请求（使用axios代替fetch）
+    const weibo_id = url.substring(url.lastIndexOf("/") + 1);
+    
+    // 调用后端接口
     axios
-      .get(apiUrl)
+      .get(`${config.API_BASE_URL}/getvedio/weibo?weibo_id=${weibo_id}`)
       .then((response) => {
-        // 处理返回的数据
-        // axios返回的数据在response.data
-        console.log(response.data.page_info?.media_info);
+        if (response.status === 200) {
+          console.log("微博视频数据:", response.data.data);
+          // 这里可以处理返回的视频数据
+          // 例如：打开视频播放器、显示视频信息等
+        } else {
+          console.error("获取微博视频失败:", response.data);
+        }
       })
       .catch((error) => {
-        console.error("Error fetching Weibo data:", error);
+        console.error("Error fetching Weibo video data:", error);
+        if (error.response) {
+          console.error("服务器错误:", error.response.data);
+        }
       });
   }
 
   function handleWatchB23(url) {
     // 提取最后一个 / 后面的 id
-    const id = url.substring(url.lastIndexOf("/") + 1);
-    // 构造 API 地址
-    const apiUrl = `https://api.b23.tv/video/${id}`;
+    const b23_id = url.substring(url.lastIndexOf("/") + 1);
     
-    // 发起 GET 请求
+    // 调用后端接口
     axios
-      .get(apiUrl)
+      .get(`${config.API_BASE_URL}/getvedio/b23?b23_id=${b23_id}`)
       .then((response) => {
-        // 处理返回的数据
-        console.log(response.data);
+        if (response.status === 200) {
+          console.log("B23视频数据:", response.data.data);
+          // 这里可以处理返回的视频数据
+          // 例如：打开视频播放器、显示视频信息等
+        } else {
+          console.error("获取B23视频失败:", response.data);
+        }
       })
       .catch((error) => {
-        console.error("Error fetching B23 data:", error);
+        console.error("Error fetching B23 video data:", error);
+        if (error.response) {
+          console.error("服务器错误:", error.response.data);
+        }
       });
   }
 
@@ -244,15 +258,17 @@ export default function Focus() {
           filterTreeNode
           showClear
         />
-        <Button
-          type="tertiary"
-          theme="light"
-          size="large"
-          className="focus-add-button"
-          onClick={() => setModalVisible(true)}
-        >
-          添加演出
-        </Button>
+        {domainConfig.editorMode && (
+          <Button
+            type="tertiary"
+            theme="light"
+            size="large"
+            className="focus-add-button"
+            onClick={() => setModalVisible(true)}
+          >
+            添加演出
+          </Button>
+        )}
       </div>
       <Typography.Title heading={3} className="focus-title">
         演出直拍/全景
@@ -281,9 +297,8 @@ export default function Focus() {
                     theme="light"
                     size="large"
                     className="focus-link-button"
-                    onClick={() =>
-                      window.open(link.url, "_blank", "noopener,noreferrer")
-                    }
+                    onClick={() => window.open(link.url, "_blank", "noopener,noreferrer") }
+                    // onClick={() => handleWatch(link.url) }
                   >
                     {link.label}
                   </Button>

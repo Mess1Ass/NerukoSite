@@ -4,6 +4,8 @@ import { IconSemiLogo, IconMenu, IconClose } from '@douyinfe/semi-icons';
 import { useNavigate, Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Focus from './pages/Focus';
+import config, { getCurrentDomainConfig } from './config';
+import DomainInfo from './components/DomainInfo';
 
 const { Header, Content } = Layout;
 
@@ -12,6 +14,21 @@ function App() {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(window.innerWidth < 768);
   const [menuOpen, setMenuOpen] = useState(false);
+  
+  // 获取当前域名配置
+  const domainConfig = getCurrentDomainConfig();
+  
+  // 根据域名设置不同的标题
+  const getSiteTitle = () => {
+    switch (domainConfig.name) {
+      case 'chikaaidoru':
+        return 'Neruko安利站';
+      case 'tool4me':
+        return 'Neruko安利站 - 编辑者模式';
+      default:
+        return 'Neruko安利站';
+    }
+  };
 
   useEffect(() => {
     if (location.pathname === '/') {
@@ -84,7 +101,10 @@ function App() {
   );
 
   return (
-    <Layout style={{ minHeight: '100vh', background: '#f5f7fa', width: '100vw', maxWidth: '100vw', maxWidth: '100dvw', margin: '0 auto', overflowX: 'hidden' }}>
+    <Layout 
+      className={`app-${domainConfig.theme}`}
+      style={{ minHeight: '100vh', background: '#f5f7fa', width: '100vw', maxWidth: '100vw', maxWidth: '100dvw', margin: '0 auto', overflowX: 'hidden' }}
+    >
       <Header
         style={{
           background: '#fff',
@@ -108,7 +128,7 @@ function App() {
           msUserSelect: 'none'
         }}>
           <img src="/assets/Home/NerukoAvatar.jpg" alt="logo" style={{ width: 36, height: 36, borderRadius: '50%', marginRight: 12, objectFit: 'cover' }} />
-          <span style={{ fontWeight: 700, fontSize: 22, letterSpacing: 1 }}>Neruko安利站</span>
+          <span style={{ fontWeight: 700, fontSize: 22, letterSpacing: 1 }}>{getSiteTitle()}</span>
         </div>
         {/* 中间Nav菜单，PC端显示，绝对居中 */}
         {!collapsed && (
@@ -156,6 +176,7 @@ function App() {
           {/* 其他路由 */}
         </Routes>
       </Content>
+      <DomainInfo />
     </Layout>
   );
 }

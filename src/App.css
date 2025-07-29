@@ -36,3 +36,35 @@
     transform: rotate(360deg);
   }
 }
+
+/* 默认主题样式 */
+.app-default {
+  --primary-color: #ae2af0;
+  --secondary-color: #ba30ff98;
+  --background-color: #f5f7fa;
+}
+
+/* ChikaAidoru主题样式 */
+.app-chika {
+  --primary-color: #ff6b9d;
+  --secondary-color: #ff8fab98;
+  --background-color: #fff5f8;
+}
+
+/* 根据域名应用不同主题 */
+.app-chika .semi-layout {
+  background: var(--background-color) !important;
+}
+
+.app-chika .semi-nav-item-selected {
+  color: var(--primary-color) !important;
+}
+
+.app-chika .focus-link-button {
+  background: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.app-chika .home-tag {
+  background: var(--secondary-color) !important;
+}

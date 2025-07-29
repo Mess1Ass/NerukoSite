@@ -15,7 +15,7 @@ const generateCarouselImages = () => {
 const carouselImages = generateCarouselImages();
 
 const generateCarouselVideos = () => {
-  const imgCount = 3; // 根据实际图片数量设置
+  const imgCount = 3; // 根据实际视频数量设置
   const bgImgs = [];
   for (let i = 1; i <= imgCount; i++) {
     bgImgs.push(`https://video.tool4me.cn/neruko/homeVideo/${i}.mp4`);
@@ -150,6 +150,7 @@ export default function Home() {
                       videoRefs.current[index] = el;
                     }}
                     src={src}
+                    poster={`/assets/Home/VideoCover/${index + 1}.JPG`}
                     style={{
                       width: "100%",
                       height: "100%",
