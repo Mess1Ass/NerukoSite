@@ -84,20 +84,23 @@ const FoVideo = ({
   };
 
   return (
-    <Modal
-      title="在线观看"
-      visible={visible}
-      onCancel={handleModalClose}
-      footer={null}
-      width={800}
-      className="fo-video-modal"
-    >
+         <Modal
+       title="在线观看"
+       visible={visible}
+       onCancel={handleModalClose}
+       footer={null}
+       width={window.innerWidth <= 768 ? '95%' : 800}
+       className="fo-video-modal"
+       style={{
+         maxWidth: '95vw',
+         margin: '20px auto'
+       }}
+     >
       <div className="fo-video-modal-content">
         {videoLoading ? (
           <div className="fo-video-loading">正在加载视频数据...</div>
         ) : videoData.length > 0 ? (
           <div>
-            {console.log("渲染视频数据:", videoData)}
             {/* 主标题和原微博链接 */}
             <div className="fo-video-header">
               <div className="fo-video-header-content">
@@ -126,6 +129,22 @@ const FoVideo = ({
                   size="small"
                   className="fo-video-original-button"
                   onClick={handleViewOriginal}
+                  icon={
+                    <svg 
+                      width="14" 
+                      height="14" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                    >
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                      <polyline points="15,3 21,3 21,9"></polyline>
+                      <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                  }
                 >
                   查看原微博
                 </Button>
@@ -135,30 +154,43 @@ const FoVideo = ({
             {/* 主视频 */}
             <div className="fo-video-main-container">
               <div className="fo-video-player-container">
-                <video
-                  controls
-                  className="fo-video-player"
-                  src={getVideoUrl(videoData[activeVideoIndex].stream_url)}
-                  // src={`${config.API_BASE_URL}/proxy?url=${encodeURIComponent(videoData[activeVideoIndex].stream_url)}`}
-                  preload="metadata"
-                  onError={(e) => {
-                    console.error("视频加载错误:", e);
-                    console.error(
-                      "尝试的URL:",
-                      videoData[activeVideoIndex].stream_url
-                    );
-                    Toast.error("视频加载失败，请检查网络连接");
-                  }}
-                  onLoadStart={() =>
-                    console.log(
-                      "开始加载视频:",
-                      videoData[activeVideoIndex].stream_url
-                    )
-                  }
-                  controlsList="nodownload"
-                >
-                  您的浏览器不支持视频播放
-                </video>
+                                 <video
+                   controls
+                   className="fo-video-player"
+                   src={getVideoUrl(videoData[activeVideoIndex].stream_url)}
+                   preload="metadata"
+                   playsInline
+                   webkit-playsinline
+                   crossOrigin="anonymous"
+                   onError={(e) => {
+                     console.error("视频加载错误:", e);
+                     Toast.error("视频加载失败，请检查网络连接");
+                   }}
+                   onLoadStart={() =>
+                     console.log(
+                       "开始加载视频:",
+                       videoData[activeVideoIndex].stream_url
+                     )
+                   }
+                   onLoadedMetadata={(e) => {
+                     console.log("视频元数据加载完成");
+                   }}
+                   onSeeking={(e) => {
+                     console.log("正在拖动进度条...");
+                   }}
+                   onSeeked={(e) => {
+                     console.log("进度条拖动完成");
+                   }}
+                   onTimeUpdate={(e) => {
+                     // 进度更新
+                   }}
+                   style={{
+                     cursor: "pointer",
+                     pointerEvents: "auto"
+                   }}
+                 >
+                   您的浏览器不支持视频播放
+                 </video>
               </div>
             </div>
 
@@ -173,12 +205,19 @@ const FoVideo = ({
                     }`}
                     onClick={() => setActiveVideoIndex(index)}
                   >
-                    <video
-                      className="fo-video-thumbnail-video"
-                      src={getVideoUrl(video.stream_url)}
-                      preload="metadata"
-                      muted
-                    />
+                                         <video
+                       className="fo-video-thumbnail-video"
+                       src={getVideoUrl(video.stream_url)}
+                       preload="metadata"
+                       muted
+                       playsInline
+                       webkit-playsinline
+                       crossOrigin="anonymous"
+                       style={{
+                         cursor: "pointer",
+                         pointerEvents: "auto"
+                       }}
+                     />
                     <div className="fo-video-play-overlay">
                       <div className="fo-video-play-icon" />
                     </div>
