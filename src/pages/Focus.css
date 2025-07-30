@@ -313,9 +313,6 @@
   padding: 20px 0;
 }
 
-.focus-video-modal-content video {
-  /* 移除所有可能影响显示的样式 */
-}
 
 .focus-video-container {
   background: #fff;
