@@ -1,5 +1,4 @@
-const fetch = require('node-fetch');
-
+// 简单的重定向代理
 module.exports = async (req, res) => {
   // 设置 CORS 头
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -16,26 +15,10 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'Missing video URL' });
     }
 
-    console.log('Proxying video URL:', videoUrl);
+    console.log('Redirecting to video URL:', videoUrl);
 
-    const response = await fetch(videoUrl, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
-        'Referer': 'https://weibo.com',
-        'Origin': 'https://weibo.com',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Fetch failed with status ${response.status}`);
-    }
-
-    // 设置响应头
-    res.setHeader('Content-Type', response.headers.get('content-type') || 'video/mp4');
-    res.setHeader('Content-Length', response.headers.get('content-length') || '');
-    
-    // 流式传输
-    response.body.pipe(res);
+    // 直接重定向到视频 URL
+    res.redirect(videoUrl);
     
   } catch (error) {
     console.error('Proxy error:', error);
