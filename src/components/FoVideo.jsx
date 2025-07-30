@@ -116,10 +116,17 @@ const FoVideo = ({ visible, onClose, videoData, videoLoading, onVideoDataChange,
                 <video
                   controls
                   className="fo-video-player"
-                  src={videoData[activeVideoIndex].stream_url}
+                  src={videoData[activeVideoIndex].stream_url.replace(/^http:/, 'https:')}
                   preload="metadata"
-                  onError={(e) => console.error("视频加载错误:", e)}
-                  onLoadStart={() => console.log("开始加载视频:", videoData[activeVideoIndex].stream_url)}
+                  onError={(e) => {
+                    console.error("视频加载错误:", e);
+                    console.error("尝试的URL:", videoData[activeVideoIndex].stream_url.replace(/^http:/, 'https:'));
+                    // 如果 HTTPS 失败，尝试在新窗口打开
+                    if (window.confirm("视频加载失败，是否在新窗口打开原微博？")) {
+                      window.open(currentUrl, "_blank", "noopener,noreferrer");
+                    }
+                  }}
+                  onLoadStart={() => console.log("开始加载视频:", videoData[activeVideoIndex].stream_url.replace(/^http:/, 'https:'))}
                   controlsList="nodownload"
                 >
                   您的浏览器不支持视频播放
@@ -136,12 +143,12 @@ const FoVideo = ({ visible, onClose, videoData, videoLoading, onVideoDataChange,
                     className={`fo-video-thumbnail ${index === activeVideoIndex ? 'active' : ''}`}
                     onClick={() => setActiveVideoIndex(index)}
                   >
-                    <video
-                      className="fo-video-thumbnail-video"
-                      src={video.stream_url}
-                      preload="metadata"
-                      muted
-                    />
+                                         <video
+                       className="fo-video-thumbnail-video"
+                       src={video.stream_url.replace(/^http:/, 'https:')}
+                       preload="metadata"
+                       muted
+                     />
                     <div className="fo-video-play-overlay">
                       <div className="fo-video-play-icon" />
                     </div>
