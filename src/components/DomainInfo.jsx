@@ -7,8 +7,8 @@ const DomainInfo = () => {
   return (
     <div style={{
       position: 'fixed',
-      top: '10px',
-      right: '10px',
+      top: '70px',
+      left: '10px',
       background: 'rgba(0,0,0,0.8)',
       color: 'white',
       padding: '10px',

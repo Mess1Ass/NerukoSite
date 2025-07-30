@@ -1,0 +1,149 @@
+/* FoVideo 组件样式 */
+
+/* 主标题和原微博链接容器 */
+.fo-video-header {
+  margin-bottom: 20px;
+  padding: 0 20px;
+}
+
+.fo-video-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.fo-video-title-container {
+  flex: 1;
+  margin-right: 16px;
+}
+
+.fo-video-title-line {
+  margin-bottom: 4px;
+}
+
+.fo-video-title-line:first-child {
+  margin-bottom: 8px;
+}
+
+/* 查看原微博按钮 */
+.fo-video-original-button {
+  white-space: nowrap;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  border: 1px solid #ae2af0;
+  color: #ae2af0;
+  background: rgba(174, 42, 240, 0.1);
+  flex-shrink: 0;
+}
+
+/* 主视频容器 */
+.fo-video-main-container {
+  margin-bottom: 20px;
+}
+
+.fo-video-player-container {
+  width: 100%;
+  height: 400px;
+}
+
+.fo-video-player {
+  width: 100%;
+  height: 100%;
+}
+
+/* 缩略图列表 */
+.fo-video-thumbnails {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 0 20px;
+}
+
+/* 缩略图项 */
+.fo-video-thumbnail {
+  width: 120px;
+  height: 80px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  transition: border-color 0.2s ease;
+}
+
+.fo-video-thumbnail.active {
+  border: 3px solid #ae2af0;
+}
+
+.fo-video-thumbnail-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 播放按钮覆盖层 */
+.fo-video-play-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fo-video-play-icon {
+  width: 0;
+  height: 0;
+  border-left: 8px solid white;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  margin-left: 2px;
+}
+
+/* 加载状态 */
+.fo-video-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 16px;
+  color: #666;
+}
+
+/* 模态框样式 */
+.fo-video-modal .semi-modal-content {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.fo-video-modal-content {
+  padding: 20px 0;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .fo-video-header-content {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .fo-video-title-container {
+    margin-right: 0;
+  }
+  
+  .fo-video-thumbnails {
+    justify-content: center;
+  }
+  
+  .fo-video-thumbnail {
+    width: 100px;
+    height: 67px;
+  }
+} 

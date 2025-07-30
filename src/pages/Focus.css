@@ -87,6 +87,16 @@
   font-size: 20px;
 }
 
+/* 确保视频模态框不受全局样式影响 */
+.focus-video-modal {
+  z-index: 2000;
+}
+
+.focus-video-modal .semi-modal {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
 /* 顶部工具栏 */
 .focus-toolbar {
   display: flex;
@@ -110,7 +120,7 @@
   font-size: 20px;
   font-weight: 600;
   text-shadow: 0 2px 8px #cac1c1;
-  background: #857c7c;
+  background: #ffffff;
   color: #c25656;
   border: none;
 }
@@ -136,7 +146,7 @@
 .focus-link-button {
   margin-right: 8px;
   margin-bottom: 4px;
-  font-size: 20px;
+  font-size: 15px;
   font-weight: 600;
   text-shadow: 0 2px 8px #fff;
 }
@@ -289,4 +299,52 @@
     width: 100%;
     font-size: 15px;
   }
+} 
+
+/* 视频模态框样式 */
+.focus-video-modal .semi-modal-content {
+  border-radius: 10px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.focus-video-modal-content {
+  border-radius: 10px;
+  padding: 20px 0;
+}
+
+.focus-video-modal-content video {
+  /* 移除所有可能影响显示的样式 */
+}
+
+.focus-video-container {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+/* 视频加载状态 */
+.focus-video-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 16px;
+  color: #666;
+}
+
+/* 视频容器 */
+.focus-video-container {
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  padding: 10px;
+}
+
+.focus-video-container:last-child {
+  margin-bottom: 0;
 } 

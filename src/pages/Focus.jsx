@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import {
   Timeline, Typography, Button, TreeSelect, BackTop,
-  Modal, Form, Input, Space, Toast
+  Modal, Form, Input, Space, Toast, Popconfirm
 } from "@douyinfe/semi-ui";
-import { IconLikeHeart, IconArrowUp, IconPlus, IconMinus } from "@douyinfe/semi-icons";
+import { IconLikeHeart, IconArrowUp, IconPlus, IconMinus, IconEdit, IconDelete } from "@douyinfe/semi-icons";
 import axios from "axios";
 import "./Focus.css";
 import config, { getCurrentDomainConfig } from '../config';
+import FoVideo from '../components/FoVideo';
 
 
 
@@ -21,13 +22,20 @@ export default function Focus() {
   const [links, setLinks] = useState([{ url: "", label: "" }]);
   const [saveLoading, setSaveLoading] = useState(false);
   const [focusEvents, setFocusEvents] = useState([]);
-  
+
+  // 编辑相关状态
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editingEvent, setEditingEvent] = useState(null);
+  const [editFormData, setEditFormData] = useState({ date: "", title: "" });
+  const [editLinks, setEditLinks] = useState([{ url: "", label: "" }]);
+  const [editLoading, setEditLoading] = useState(false);
+
   // 获取当前域名配置
   const domainConfig = getCurrentDomainConfig();
 
   useEffect(() => {
     axios.get(`${config.API_BASE_URL}/getAll`).then((response) => {
-      if (response.status === 200){
+      if (response.status === 200) {
         // 按日期排序：从早到晚
         const sortedData = response.data.data.sort((a, b) => {
           const dateA = new Date(a.date.replace(/\./g, '-'));
@@ -36,7 +44,7 @@ export default function Focus() {
         });
         setFocusEvents(sortedData);
       }
-      else{
+      else {
         Toast.error("获取演出记录失败");
       }
     });
@@ -61,61 +69,18 @@ export default function Focus() {
     }
   };
 
+    // 视频播放相关状态
+  const [videoModalVisible, setVideoModalVisible] = useState(false);
+  const [videoData, setVideoData] = useState([]);
+  const [videoLoading, setVideoLoading] = useState(false);
+
+  const [currentUrl, setCurrentUrl] = useState('');
+
   const handleWatch = (url) => {
-    if (url.includes("weibo.com")) {
-      handleWatchWeibo(url);
-    } else if (url.includes("b23.tv")) {
-      handleWatchB23(url);
-    }
+    setCurrentUrl(url);
+    setVideoModalVisible(true);
   };
 
-  function handleWatchWeibo(url) {
-    // 提取最后一个 / 后面的 id
-    const weibo_id = url.substring(url.lastIndexOf("/") + 1);
-    
-    // 调用后端接口
-    axios
-      .get(`${config.API_BASE_URL}/getvedio/weibo?weibo_id=${weibo_id}`)
-      .then((response) => {
-        if (response.status === 200) {
-          console.log("微博视频数据:", response.data.data);
-          // 这里可以处理返回的视频数据
-          // 例如：打开视频播放器、显示视频信息等
-        } else {
-          console.error("获取微博视频失败:", response.data);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching Weibo video data:", error);
-        if (error.response) {
-          console.error("服务器错误:", error.response.data);
-        }
-      });
-  }
-
-  function handleWatchB23(url) {
-    // 提取最后一个 / 后面的 id
-    const b23_id = url.substring(url.lastIndexOf("/") + 1);
-    
-    // 调用后端接口
-    axios
-      .get(`${config.API_BASE_URL}/getvedio/b23?b23_id=${b23_id}`)
-      .then((response) => {
-        if (response.status === 200) {
-          console.log("B23视频数据:", response.data.data);
-          // 这里可以处理返回的视频数据
-          // 例如：打开视频播放器、显示视频信息等
-        } else {
-          console.error("获取B23视频失败:", response.data);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching B23 video data:", error);
-        if (error.response) {
-          console.error("服务器错误:", error.response.data);
-        }
-      });
-  }
 
   // 添加链接输入框
   const addLink = () => {
@@ -135,6 +100,91 @@ export default function Focus() {
     const newLinks = [...links];
     newLinks[index][field] = value;
     setLinks(newLinks);
+  };
+
+  // 编辑链接相关函数
+  const updateEditLink = (index, field, value) => {
+    const newLinks = [...editLinks];
+    newLinks[index][field] = value;
+    setEditLinks(newLinks);
+  };
+
+  const addEditLink = () => {
+    setEditLinks([...editLinks, { url: "", label: "" }]);
+  };
+
+  const removeEditLink = (index) => {
+    if (editLinks.length > 1) {
+      const newLinks = editLinks.filter((_, i) => i !== index);
+      setEditLinks(newLinks);
+    }
+  };
+
+  // 打开编辑模态框
+  const handleEdit = (event) => {
+    setEditingEvent(event);
+    setEditFormData({
+      date: event.date,
+      title: event.title
+    });
+    setEditLinks([...event.links]);
+    setEditModalVisible(true);
+  };
+
+  // 保存编辑
+  const handleEditSave = async () => {
+    setEditLoading(true);
+    try {
+      if (!editFormData.date || !editFormData.title) {
+        Toast.warning("请填写日期和标题");
+        return;
+      }
+
+      const validLinks = editLinks.filter(link => link.url && link.label);
+      if (validLinks.length === 0) {
+        Toast.warning("请至少添加一条链接");
+        return;
+      }
+
+      const data = {
+        _id: editingEvent._id, // 假设后端需要ID来更新
+        date: editFormData.date,
+        title: editFormData.title,
+        links: validLinks
+      };
+
+
+      const response = await axios.post(`${config.API_BASE_URL}/updatefolink`, data);
+
+      if (response.status === 200) {
+        Toast.success("更新成功");
+        setEditModalVisible(false);
+        // 刷新数据
+        window.location.reload();
+      } else {
+        Toast.error("更新失败: " + (response.data.error || "未知错误"));
+      }
+    } catch (error) {
+      Toast.error("更新失败: " + (error.response?.data?.error || "网络错误"));
+    } finally {
+      setEditLoading(false);
+    }
+  };
+
+  // 删除演出记录
+  const handleDelete = async (event) => {
+    try {
+      const response = await axios.post(`${config.API_BASE_URL}/deletefolink?id=${event._id}`);
+      if (response.status === 200) {
+        Toast.success("删除成功");
+        // 刷新数据
+        window.location.reload();
+      } else {
+        Toast.error("删除失败: " + (response.data.error || "未知错误"));
+      }
+    } catch (error) {
+      Toast.error("删除失败: " + (error.response?.data?.error || "网络错误"));
+    }
   };
 
   // 保存新演出记录
@@ -286,9 +336,37 @@ export default function Focus() {
             }
           >
             <div id={`focus-timeline-item-${idx}`}>
-              <Typography.Title heading={4} className="focus-timeline-text" style={{ fontWeight: '900 !important', margin: 0 }}>
-                {event.title}
-              </Typography.Title>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+                <Typography.Title heading={4} className="focus-timeline-text" style={{ fontWeight: '900 !important', margin: 0 }}>
+                  {event.title}
+                </Typography.Title>
+                {domainConfig.editorMode && (
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <Button
+                      type="tertiary"
+                      theme="light"
+                      size="small"
+                      icon={<IconEdit />}
+                      onClick={() => handleEdit(event)}
+                    >
+                      编辑
+                    </Button>
+                    <Popconfirm
+                      title="确定要删除这个演出记录吗？"
+                      onConfirm={() => handleDelete(event)}
+                    >
+                      <Button
+                        type="danger"
+                        theme="light"
+                        size="small"
+                        icon={<IconDelete />}
+                      >
+                        删除
+                      </Button>
+                    </Popconfirm>
+                  </div>
+                )}
+              </div>
               <div style={{ marginTop: 8 }}>
                 {event.links.map((link, i) => (
                   <Button
@@ -297,8 +375,8 @@ export default function Focus() {
                     theme="light"
                     size="large"
                     className="focus-link-button"
-                    onClick={() => window.open(link.url, "_blank", "noopener,noreferrer") }
-                    // onClick={() => handleWatch(link.url) }
+                    // onClick={() => window.open(link.url, "_blank", "noopener,noreferrer") }
+                    onClick={() => handleWatch(link.url)}
                   >
                     {link.label}
                   </Button>
@@ -413,6 +491,118 @@ export default function Focus() {
           </div>
         </div>
       </Modal>
+
+      {/* 编辑演出记录模态框 */}
+      <Modal
+        title="编辑演出记录"
+        visible={editModalVisible}
+        onCancel={() => {
+          setEditModalVisible(false);
+          setEditingEvent(null);
+          setEditFormData({ date: "", title: "" });
+          setEditLinks([{ url: "", label: "" }]);
+        }}
+        footer={null}
+        width={600}
+        className="focus-modal"
+      >
+        <div className="focus-modal-content">
+          <div className="focus-form-item">
+            <label className="focus-form-label">
+              日期 *
+            </label>
+            <Input
+              placeholder="格式：2025.01.01"
+              value={editFormData.date}
+              onChange={(value) => setEditFormData({ ...editFormData, date: value })}
+              className="focus-form-input"
+            />
+          </div>
+
+          <div className="focus-form-item">
+            <label className="focus-form-label">
+              演出标题 *
+            </label>
+            <Input
+              placeholder="请输入演出标题"
+              value={editFormData.title}
+              onChange={(value) => setEditFormData({ ...editFormData, title: value })}
+              className="focus-form-input"
+            />
+          </div>
+
+          <div className="focus-form-item">
+            <label className="focus-form-label">
+              链接列表
+            </label>
+            <div className="focus-links-container">
+              {editLinks.map((link, index) => (
+                <div key={index} className="focus-link-item">
+                  <Input
+                    placeholder="链接标签（如：单人直拍）"
+                    value={link.label}
+                    onChange={(value) => updateEditLink(index, "label", value)}
+                    className="focus-link-label-input"
+                  />
+                  <Input
+                    placeholder="链接URL"
+                    value={link.url}
+                    onChange={(value) => updateEditLink(index, "url", value)}
+                    className="focus-link-url-input"
+                  />
+                  {editLinks.length > 1 && (
+                    <Button
+                      type="danger"
+                      icon={<IconMinus />}
+                      onClick={() => removeEditLink(index)}
+                      className="focus-link-remove-button"
+                    />
+                  )}
+                </div>
+              ))}
+              <Button
+                icon={<IconPlus />}
+                onClick={addEditLink}
+                className="focus-add-link-button"
+              >
+                添加链接
+              </Button>
+            </div>
+          </div>
+
+          <div className="focus-modal-footer">
+            <Button
+              onClick={() => {
+                setEditModalVisible(false);
+                setEditingEvent(null);
+                setEditFormData({ date: "", title: "" });
+                setEditLinks([{ url: "", label: "" }]);
+              }}
+              className="focus-cancel-button"
+            >
+              取消
+            </Button>
+            <Button
+              type="primary"
+              onClick={handleEditSave}
+              className="focus-save-button"
+              loading={editLoading}
+            >
+              更新
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* 视频播放组件 */}
+      <FoVideo
+        visible={videoModalVisible}
+        onClose={(visible) => setVideoModalVisible(visible)}
+        videoData={videoData}
+        videoLoading={videoLoading}
+        onVideoDataChange={setVideoData}
+        currentUrl={currentUrl}
+      />
     </div>
   );
 }
