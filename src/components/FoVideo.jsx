@@ -6,6 +6,18 @@ import './FoVideo.css';
 
 const FoVideo = ({ visible, onClose, videoData, videoLoading, onVideoDataChange, currentUrl }) => {
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
+  
+  // 判断是否为本地开发环境
+  const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  
+  // 获取视频 URL，本地开发时使用直接链接，部署后使用代理
+  const getVideoUrl = (streamUrl) => {
+    if (isLocalDev) {
+      return streamUrl.replace(/^http:/, 'https:');
+    } else {
+      return `/api/proxy-video?url=${encodeURIComponent(streamUrl)}`;
+    }
+  };
 
   // 处理视频播放
   const handleVideoPlay = async (url) => {
@@ -116,17 +128,17 @@ const FoVideo = ({ visible, onClose, videoData, videoLoading, onVideoDataChange,
                 <video
                   controls
                   className="fo-video-player"
-                  src={videoData[activeVideoIndex].stream_url.replace(/^http:/, 'https:')}
+                  src={getVideoUrl(videoData[activeVideoIndex].stream_url)}
                   preload="metadata"
                   onError={(e) => {
                     console.error("视频加载错误:", e);
-                    console.error("尝试的URL:", videoData[activeVideoIndex].stream_url.replace(/^http:/, 'https:'));
-                    // 如果 HTTPS 失败，尝试在新窗口打开
+                    console.error("尝试的URL:", videoData[activeVideoIndex].stream_url);
+                    // 如果加载失败，尝试在新窗口打开
                     if (window.confirm("视频加载失败，是否在新窗口打开原微博？")) {
                       window.open(currentUrl, "_blank", "noopener,noreferrer");
                     }
                   }}
-                  onLoadStart={() => console.log("开始加载视频:", videoData[activeVideoIndex].stream_url.replace(/^http:/, 'https:'))}
+                  onLoadStart={() => console.log("开始加载视频:", videoData[activeVideoIndex].stream_url)}
                   controlsList="nodownload"
                 >
                   您的浏览器不支持视频播放
@@ -145,7 +157,7 @@ const FoVideo = ({ visible, onClose, videoData, videoLoading, onVideoDataChange,
                   >
                                          <video
                        className="fo-video-thumbnail-video"
-                       src={video.stream_url.replace(/^http:/, 'https:')}
+                       src={getVideoUrl(video.stream_url)}
                        preload="metadata"
                        muted
                      />
