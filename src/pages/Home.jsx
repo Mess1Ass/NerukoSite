@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Typography, Timeline, Carousel, Button } from "@douyinfe/semi-ui";
 import { IconClose } from "@douyinfe/semi-icons";
+import axios from "axios";
+import config from "../config";
 import "./Home.css";
 
 const generateCarouselImages = () => {
@@ -79,6 +81,20 @@ export default function Home() {
     const randomIndex = Math.floor(Math.random() * carouselVideos.length);
     setCurrentVideoIndex(randomIndex);
   }, []); // 只在组件挂载时执行一次
+
+  // 保存访问记录
+  useEffect(() => {
+    const saveVisitRecord = async () => {
+      try {
+        await axios.get(`${config.API_BASE_URL}/saveip?hostname=${encodeURIComponent(window.location.hostname)}`);
+        console.log('访问记录已保存');
+      } catch (error) {
+        console.error('保存访问记录失败:', error);
+      }
+    };
+
+    saveVisitRecord();
+  }, []);
 
   const handleCloseIntro = () => {
     setShowIntroVideo(false);
@@ -172,9 +188,15 @@ export default function Home() {
       {/* 第二模块：个人介绍 */}
       <section className="home-section home-section-profile">
         <img src={person.avatar} alt={person.name} className="home-avatar" />
-        <Typography.Title heading={2} style={{ marginBottom: 12 }}>
+        <Typography.Title heading={2} style={{ marginBottom: 10 }}>
           {person.name}
         </Typography.Title>
+        <a
+          href="https://weibo.com/u/6480076001"
+          style={{ marginBottom: 10, display: "block", textAlign: "center" }}
+        >
+          魔法猫咪微博主页
+        </a>
         <Typography.Paragraph
           spacing="extended"
           style={{
@@ -195,12 +217,7 @@ export default function Home() {
             </span>
           ))}
         </div>
-        <a
-          href="https://weibo.com/u/6480076001"
-          style={{ marginTop: 16, display: "block", textAlign: "center" }}
-        >
-          魔法猫咪微博主页
-        </a>
+
       </section>
       {/* 第三模块：优选图片 */}
       <section className="home-section home-section-carousel">
