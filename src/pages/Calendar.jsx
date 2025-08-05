@@ -58,12 +58,13 @@ export default function Calendar() {
             try {
                 setLoading(true);
                 await refreshShowData();
-            } catch (error) {
-                console.error('获取演出数据失败:', error);
-                Toast.error('获取演出数据失败');
-            } finally {
-                setLoading(false);
-            }
+                    } catch (error) {
+            console.error('获取演出数据失败:', error);
+            const errorMessage = error.response?.data?.error || '网络错误';
+            Toast.error('获取演出数据失败: ' + errorMessage);
+        } finally {
+            setLoading(false);
+        }
         };
 
         fetchShowData();
@@ -149,6 +150,12 @@ export default function Calendar() {
                 return;
             }
 
+            // 检查开始时间不能大于结束时间
+            if (editFormData.endTime && parseInt(editFormData.startTime) >= parseInt(editFormData.endTime)) {
+                Toast.warning('开始时间不能大于或等于结束时间');
+                return;
+            }
+
             // 检查当天是否已存在其他演出
             if (checkSameDayShow(editFormData.startTime, editingShow._id)) {
                 setPendingAction({
@@ -173,7 +180,8 @@ export default function Calendar() {
                 location: editFormData.location
             });
         } catch (error) {
-            Toast.error('更新失败: ' + (error.response?.data?.error || '网络错误'));
+            const errorMessage = error.response?.data?.error || '网络错误';
+            Toast.error('更新失败: ' + errorMessage);
         }
     };
 
@@ -190,7 +198,8 @@ export default function Calendar() {
                 Toast.error('更新失败');
             }
         } catch (error) {
-            Toast.error('更新失败: ' + (error.response?.data?.error || '网络错误'));
+            const errorMessage = error.response?.data?.error || '网络错误';
+            Toast.error('更新失败: ' + errorMessage);
         }
     };
 
@@ -206,7 +215,8 @@ export default function Calendar() {
                 Toast.error('删除失败');
             }
         } catch (error) {
-            Toast.error('删除失败: ' + (error.response?.data?.error || '网络错误'));
+            const errorMessage = error.response?.data?.error || '网络错误';
+            Toast.error('删除失败: ' + errorMessage);
         }
     };
 
@@ -216,6 +226,13 @@ export default function Calendar() {
             setAddLoading(true);
             if (!addFormData.title || !addFormData.startTime) {
                 Toast.warning('请填写演出标题和开始时间');
+                return;
+            }
+
+            // 检查开始时间不能大于结束时间
+            if (addFormData.endTime && parseInt(addFormData.startTime) >= parseInt(addFormData.endTime)) {
+                Toast.warning('开始时间不能大于或等于结束时间');
+                setAddLoading(false);
                 return;
             }
 
@@ -242,7 +259,8 @@ export default function Calendar() {
                 location: addFormData.location
             });
         } catch (error) {
-            Toast.error('添加失败: ' + (error.response?.data?.error || '网络错误'));
+            const errorMessage = error.response?.data?.error || '网络错误';
+            Toast.error('添加失败: ' + errorMessage);
         } finally {
             setAddLoading(false);
         }
@@ -263,7 +281,8 @@ export default function Calendar() {
                 Toast.error('添加失败');
             }
         } catch (error) {
-            Toast.error('添加失败: ' + (error.response?.data?.error || '网络错误'));
+            const errorMessage = error.response?.data?.error || '网络错误';
+            Toast.error('添加失败: ' + errorMessage);
         } finally {
             setAddLoading(false);
         }
@@ -681,6 +700,13 @@ export default function Calendar() {
                      <Button key="confirm" type="primary" onClick={async () => {
                          setConfirmModalVisible(false);
                          if (pendingAction) {
+                             // 检查开始时间不能大于结束时间
+                             if (pendingAction.data.endTime && parseInt(pendingAction.data.startTime) >= parseInt(pendingAction.data.endTime)) {
+                                 Toast.warning('开始时间不能大于或等于结束时间');
+                                 setPendingAction(null);
+                                 return;
+                             }
+                             
                              if (pendingAction.type === 'edit') {
                                  await performEditSave(pendingAction.data);
                              } else if (pendingAction.type === 'add') {
