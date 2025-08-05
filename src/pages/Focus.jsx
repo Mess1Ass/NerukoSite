@@ -121,11 +121,26 @@ export default function Focus() {
   };
 
   // 打开编辑模态框
+  // 时间戳转换函数
+  const formatTimestamp = (timestamp) => {
+    if (!timestamp) return '';
+    const date = new Date(parseInt(timestamp));
+    return date.toLocaleString('zh-CN', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+  };
+
   const handleEdit = (event) => {
     setEditingEvent(event);
     setEditFormData({
       date: event.date,
-      title: event.title
+      title: event.title,
+      updateTime: event.updateTime
     });
     setEditLinks([...event.links]);
     setEditModalVisible(true);
@@ -494,7 +509,21 @@ export default function Focus() {
 
       {/* 编辑演出记录模态框 */}
       <Modal
-        title="编辑演出记录"
+        title={
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>编辑演出记录</span>
+            {editFormData.updateTime && (
+              <span style={{ 
+                fontSize: '12px', 
+                color: '#666', 
+                fontWeight: 'normal',
+                marginLeft: '10px'
+              }}>
+                上次修改：{formatTimestamp(editFormData.updateTime)}
+              </span>
+            )}
+          </div>
+        }
         visible={editModalVisible}
         onCancel={() => {
           setEditModalVisible(false);
@@ -569,6 +598,8 @@ export default function Focus() {
               </Button>
             </div>
           </div>
+
+
 
           <div className="focus-modal-footer">
             <Button

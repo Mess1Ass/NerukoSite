@@ -4,6 +4,7 @@ import { IconSemiLogo, IconMenu, IconClose } from '@douyinfe/semi-icons';
 import { useNavigate, Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Focus from './pages/Focus';
+import Calendar from './pages/Calendar';
 import About from './pages/About';
 import config, { getCurrentDomainConfig } from './config';
 import DomainInfo from './components/DomainInfo';
@@ -50,7 +51,9 @@ function App() {
   const navItems = [
     { itemKey: '/home', text: '首页' },
     { itemKey: '/focus', text: '直拍链接合集' },
+    { itemKey: '/calendar', text: '演出日历' },
     { itemKey: '/about', text: '关于' },
+    
     // 可继续添加更多菜单项 
   ];
 
@@ -174,6 +177,7 @@ function App() {
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/focus" element={<Focus />} />
+          <Route path="/calendar" element={<Calendar />} />
           <Route path="/about" element={<About />} />
           {/* 其他路由 */}
         </Routes>

@@ -194,6 +194,19 @@
   font-size: 16px;
 }
 
+.focus-update-time {
+  padding: 8px 12px;
+  background: #f5f5f5;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+}
+
 .focus-links-container {
   display: flex;
   flex-direction: column;
