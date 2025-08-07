@@ -288,6 +288,40 @@ export default function Calendar() {
         }
     };
 
+    // 按月份分组演出记录
+    const groupShowsByMonth = (shows) => {
+        const groups = {};
+        shows.forEach(show => {
+            const date = new Date(parseInt(show.startTime));
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const key = `${year}-${month.toString().padStart(2, '0')}`;
+            
+            if (!groups[key]) {
+                groups[key] = {
+                    year,
+                    month,
+                    label: `${year}年${month}月`,
+                    shows: []
+                };
+            }
+            groups[key].shows.push(show);
+        });
+        
+        // 按时间倒序排列
+        return Object.values(groups).sort((a, b) => {
+            if (a.year !== b.year) return b.year - a.year;
+            return b.month - a.month;
+        });
+    };
+
+    // 格式化月份标签
+    const formatMonthLabel = (year, month) => {
+        const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', 
+                           '七月', '八月', '九月', '十月', '十一月', '十二月'];
+        return `${year}年${monthNames[month - 1]}`;
+    };
+
     if (loading) {
         return (
             <div className="calendar-container">
@@ -416,67 +450,87 @@ export default function Calendar() {
 
                     <div className="shows-list">
                         {showLogs.length > 0 ? (
-                            [...showLogs]
-                                .sort((a, b) => {
-                                    // 按开始时间从晚到早排序
-                                    const timeA = new Date(parseInt(a.startTime)).getTime();
-                                    const timeB = new Date(parseInt(b.startTime)).getTime();
-                                    return timeB - timeA;
-                                })
-                                .map((show, index) => (
-                                <Card key={show._id || index} className="show-item-card">
-                                    <div className="show-item-header">
-                                        <Typography.Title heading={5} className="show-item-title">
-                                            {show.title}
+                            groupShowsByMonth([...showLogs]).map((group, groupIndex) => (
+                                <div key={groupIndex} className="show-group">
+                                    <div className="show-group-header">
+                                        <Typography.Title heading={5} className="show-group-title">
+                                            {formatMonthLabel(group.year, group.month)}
                                         </Typography.Title>
-                                        {domainConfig.editorMode && (
-                                            <div className="show-item-actions">
-                                                <Button
-                                                    type="tertiary"
-                                                    size="small"
-                                                    icon={<IconEdit />}
-                                                    onClick={() => handleEdit(show)}
-                                                >
-                                                    编辑
-                                                </Button>
-                                                <Popconfirm
-                                                    title="确定要删除这场演出吗？"
-                                                    onConfirm={() => handleDelete(show)}
-                                                >
-                                                    <Button
-                                                        type="danger"
-                                                        size="small"
-                                                        icon={<IconDelete />}
-                                                    >
-                                                        删除
-                                                    </Button>
-                                                </Popconfirm>
-                                            </div>
-                                        )}
+                                        <Typography.Text className="show-group-count">
+                                            {group.shows.length}场演出
+                                        </Typography.Text>
                                     </div>
+                                    
+                                    <div className="show-group-content">
+                                        {group.shows.map((show, index) => (
+                                            <Card key={show._id || index} className="show-item-card">
+                                                <div className="show-item-header">
+                                                    <Typography.Title heading={5} className="show-item-title">
+                                                        {show.title}
+                                                    </Typography.Title>
+                                                    {domainConfig.editorMode && (
+                                                        <div className="show-item-actions">
+                                                            <Button
+                                                                type="tertiary"
+                                                                size="small"
+                                                                icon={<IconEdit />}
+                                                                onClick={() => handleEdit(show)}
+                                                                className="edit-btn"
+                                                            >
+                                                                修改
+                                                            </Button>
+                                                            <Popconfirm
+                                                                title="确定要删除这场演出吗？"
+                                                                onConfirm={() => handleDelete(show)}
+                                                            >
+                                                                <Button
+                                                                    type="danger"
+                                                                    size="small"
+                                                                    icon={<IconDelete />}
+                                                                    className="delete-btn"
+                                                                >
+                                                                    删除
+                                                                </Button>
+                                                            </Popconfirm>
+                                                        </div>
+                                                    )}
+                                                </div>
 
-                                    <div className="show-item-content">
-                                        <div className="show-item-info">
-                                            <Typography.Text strong>开始时间：</Typography.Text>
-                                            <Typography.Text>{formatDate(show.startTime)}</Typography.Text>
-                                        </div>
-                                        {show.endTime && (
-                                            <div className="show-item-info">
-                                                <Typography.Text strong>结束时间：</Typography.Text>
-                                                <Typography.Text>{formatDate(show.endTime)}</Typography.Text>
-                                            </div>
-                                        )}
-                                        {show.location && (
-                                            <div className="show-item-info">
-                                                <Typography.Text strong>演出地点：</Typography.Text>
-                                                <Typography.Text>{show.location}</Typography.Text>
-                                            </div>
-                                        )}
+                                                <div className="show-item-content">
+                                                    <div className="show-item-info">
+                                                        <div className="info-icon">📅</div>
+                                                        <div className="info-content">
+                                                            <Typography.Text className="info-label">开始时间</Typography.Text>
+                                                            <Typography.Text className="info-value">{formatDate(show.startTime)}</Typography.Text>
+                                                        </div>
+                                                    </div>
+                                                    {show.endTime && (
+                                                        <div className="show-item-info">
+                                                            <div className="info-icon">⏰</div>
+                                                            <div className="info-content">
+                                                                <Typography.Text className="info-label">结束时间</Typography.Text>
+                                                                <Typography.Text className="info-value">{formatDate(show.endTime)}</Typography.Text>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    {show.location && (
+                                                        <div className="show-item-info">
+                                                            <div className="info-icon">📍</div>
+                                                            <div className="info-content">
+                                                                <Typography.Text className="info-label">演出地点</Typography.Text>
+                                                                <Typography.Text className="info-value">{show.location}</Typography.Text>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </Card>
+                                        ))}
                                     </div>
-                                </Card>
+                                </div>
                             ))
                         ) : (
                             <div className="no-shows-message">
+                                <div className="no-shows-icon">🎭</div>
                                 <Typography.Text>暂无演出记录</Typography.Text>
                             </div>
                         )}
