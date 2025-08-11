@@ -308,7 +308,16 @@ export default function Calendar() {
             groups[key].shows.push(show);
         });
         
-        // 按时间倒序排列
+        // 对每个月份内的演出按时间从晚到早排序
+        Object.values(groups).forEach(group => {
+            group.shows.sort((a, b) => {
+                const dateA = new Date(parseInt(a.startTime));
+                const dateB = new Date(parseInt(b.startTime));
+                return dateB - dateA; // 从晚到早排序
+            });
+        });
+        
+        // 按时间倒序排列月份
         return Object.values(groups).sort((a, b) => {
             if (a.year !== b.year) return b.year - a.year;
             return b.month - a.month;
