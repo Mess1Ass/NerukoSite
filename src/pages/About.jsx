@@ -131,38 +131,33 @@ export default function About() {
 
                         <div className="friends-links-grid">
 
-                            <Empty
-                                image={<IllustrationConstruction style={{ width: 150, height: 150 }} />}
-                                darkModeImage={<IllustrationConstructionDark style={{ width: 150, height: 150 }} />}
-                                title={'功能建设中'}
-                                description="当前功能暂未开放，敬请期待。"
-                            />
-
-                            {/* 友链卡片示例 */}
-                            {/* <Card className="friend-link-card">
+                            {/* Natsumi 友链 */}
+                            <Card className="friend-link-card special-friend">
                                 <div className="friend-link-content">
                                     <div className="friend-link-avatar">
-                                        <div className="avatar-placeholder">友</div>
+                                        <img 
+                                            src="/assets/About/NatsumiAvatar.JPG" 
+                                            alt="Natsumi Avatar" 
+                                            className="friend-link-avatar-img"
+                                        />
                                     </div>
                                     <div className="friend-link-info">
                                         <Typography.Text strong style={{ fontSize: '16px' }}>
-                                            示例友链
-                                        </Typography.Text>
-                                        <Typography.Text type="secondary" size="small">
-                                            这是一个示例友链描述
+                                            夏沫安利站
                                         </Typography.Text>
                                     </div>
                                     <Button 
                                         type="tertiary" 
                                         size="small"
                                         className="visit-button"
+                                        onClick={() => window.open('https://natsumi.chikaaidoru.cn/home', '_blank', 'noopener,noreferrer')}
                                     >
                                         访问
                                     </Button>
                                 </div>
                             </Card>
 
-                            <Card className="friend-link-card">
+                            {/* <Card className="friend-link-card">
                                 <div className="friend-link-content">
                                     <div className="friend-link-avatar">
                                         <div className="avatar-placeholder">链</div>
@@ -187,7 +182,14 @@ export default function About() {
 
                             {/* 添加更多友链的占位符 */}
                             {/* <div className="add-friend-link">
-                                <Card className="friend-link-card add-card">
+                                <Card 
+                                    className="friend-link-card add-card"
+                                    onClick={() => {
+                                        // 可以在这里添加联系信息或者跳转到联系页面
+                                        const contactInfo = "如果您想添加友链，请联系我：\n\n可以通过以下方式联系：\n• 在 GitHub 上提交 Issue\n• 发送邮件到我的邮箱\n• 通过社交媒体联系我\n\n期待与您的合作！";
+                                        alert(contactInfo);
+                                    }}
+                                >
                                     <div className="add-content">
                                         <Typography.Text type="secondary" size="large">
                                             +

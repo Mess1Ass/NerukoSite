@@ -138,6 +138,18 @@
     border-color: #667eea;
 }
 
+/* 特殊友链样式 */
+.friend-link-card.special-friend {
+    border-color: #ae2af0;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f5ff 100%);
+}
+
+.friend-link-card.special-friend:hover {
+    border-color: #8a1cc8;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f0ff 100%);
+    box-shadow: 0 8px 24px rgba(174, 42, 240, 0.2);
+}
+
 .friend-link-content {
     display: flex;
     align-items: center;
@@ -160,6 +172,21 @@
     justify-content: center;
     font-size: 18px;
     font-weight: bold;
+}
+
+/* 友链头像图片样式 */
+.friend-link-avatar-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e8e8e8;
+    transition: all 0.3s ease;
+}
+
+.friend-link-avatar-img:hover {
+    border-color: #ae2af0;
+    transform: scale(1.05);
 }
 
 .friend-link-info {
@@ -230,6 +257,11 @@
         font-size: 16px;
     }
     
+    .friend-link-avatar-img {
+        width: 40px;
+        height: 40px;
+    }
+    
     .friends-links-container {
         padding: 20px 15px;
     }
@@ -249,6 +281,11 @@
         width: 35px;
         height: 35px;
         font-size: 14px;
+    }
+    
+    .friend-link-avatar-img {
+        width: 35px;
+        height: 35px;
     }
 }
 
