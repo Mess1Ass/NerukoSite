@@ -260,7 +260,7 @@ export default function Focus() {
 
   // 背景图片列表 - 自动生成所有图片路径
   const generateBgImgs = () => {
-    const imgCount = 12; // 根据实际图片数量设置
+    const imgCount = 16; // 根据实际图片数量设置
     const bgImgs = [];
     for (let i = 1; i <= imgCount; i++) {
       bgImgs.push(`/assets/Home/CarouselImgs/${i}.JPG`);
